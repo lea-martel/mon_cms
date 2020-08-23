@@ -3,8 +3,8 @@ Contributors: brainstormforce, wpcrafter
 Donate link: https://www.paypal.me/BrainstormForce
 Tags: woocommerce, cart abandonment, cart recovery
 Requires at least: 4.4
-Tested up to: 5.4.2
-Stable tag: 1.2.7
+Tested up to: 5.5
+Stable tag: 1.2.8
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -129,9 +129,12 @@ Here are few thoughts behind making it available for free:
 
 == Changelog ==
 
+= Version 1.2.8 - Friday, 14th August 2020 =
+* New: Added new option to prevent recovery emails for specific order status.
+* Fix: Deprecated the 'woo_ca_exclude_on_hold_order_from_tracking' filter.
+
 = Version 1.2.7 - Tuesday, 16th June 2020 =
-* New: Users can now share [non-personal usage data] to help us test and develop better products. 
-( https://store.brainstormforce.com/usage-tracking/?utm_source=wp_repo&utm_medium=changelog&utm_campaign=usage_tracking )
+* New: Users can now share [non-personal usage data](https://my.cartflows.com/usage-tracking/?utm_source=wp_repo&utm_medium=changelog&utm_campaign=usage_tracking) to help us test and develop better products.
 
 = Version 1.2.6 - Thursday, 21st May 2020 =
 * New: Added option to send the email to admin after successfully cart recovery of the abandoned order.

@@ -288,15 +288,16 @@
              });
         },   
     }
+    
 
     $(document).ready(
         function () {
             EmailTemplatesAdmin.init();
             CartAbandonmentSettings.init();
             ZapierSettings.init();
-
             ToolTipHover.init();
         }
+       
     );
 
 

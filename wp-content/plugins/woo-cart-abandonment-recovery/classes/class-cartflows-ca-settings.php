@@ -85,6 +85,20 @@ class Cartflows_Ca_Settings {
 		);
 
 		add_settings_field(
+			'wcf_ca_excludes_orders',
+			__( 'Exclude email sending For', 'woo-cart-abandonment-recovery' ),
+			array( $this, 'wcf_ca_exclude_orders_callback' ),
+			WCF_CA_PAGE_NAME,
+			WCF_CA_GENERAL_SETTINGS_SECTION,
+			array( '<br><span class="description"><strong>Note:</strong>' . __( ' It will not send future recovery emails to selected order status and will mark as recovered.', 'woo-cart-abandonment-recovery' ) . '</span>' )
+		);
+
+		register_setting(
+			WCF_CA_SETTINGS_OPTION_GROUP,
+			'wcf_ca_excludes_orders'
+		);
+
+		add_settings_field(
 			'wcar_email_admin_on_recovery',
 			__( 'Notify recovery to admin', 'woo-cart-abandonment-recovery' ),
 			array( $this, 'wcar_email_admin_on_recovery' ),
@@ -573,6 +587,43 @@ class Cartflows_Ca_Settings {
 		echo wp_kses_post( $html );
 	}
 
+	/**
+	 * Callback for ignore users from tracking cart.
+	 *
+	 * @param array $args args.
+	 * @since 1.1.5
+	 */
+	public function wcf_ca_exclude_orders_callback( $args ) {
+		$wcf_ca_excludes_orders = get_option( 'wcf_ca_excludes_orders' );
+
+		$html             = '';
+		$order_status     = wc_get_order_statuses();
+		$new_order_status = str_replace( 'wc-', '', array_keys( $order_status ) );
+		$order_status     = array_combine( $new_order_status, $order_status );
+		$order_status     = \array_diff( $order_status, array( 'Refunded', 'Draft', 'Cancelled' ) );
+		?>
+		<p class="wcf-ca-excludes-orders" name="wcf-ca-excludes-orders">
+			<?php
+			foreach ( $order_status as $key => $value ) {
+				?>
+				<input type="checkbox" name="wcf_ca_excludes_orders[]"
+				<?php
+				if ( ! empty( $wcf_ca_excludes_orders ) && in_array( $key, $wcf_ca_excludes_orders, true ) ) {
+					checked( true, true );
+				}
+				?>
+				value="<?php echo esc_attr( $key ); ?>">
+				<?php
+				echo esc_attr( $value );
+				echo '<br> ';
+			}
+			?>
+		</p>
+
+		<?php
+		$html .= '<span for="wcf_ca_excludes_orders"> ' . $args[0] . '</span>';
+		echo wp_kses_post( $html );
+	}
 	/**
 	 * Delete coupons.
 	 *

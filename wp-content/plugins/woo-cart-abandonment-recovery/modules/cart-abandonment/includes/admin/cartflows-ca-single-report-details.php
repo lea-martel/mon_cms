@@ -46,9 +46,7 @@
 								<p>
 									<?php
 									esc_html_e(
-										'All new activated emails will be reschedule for this abandoned order.New emails will
-											be sent to user according to schedule time.',
-										'woo-cart-abandonment-recovery'
+										'All new activated emails will be reschedule for this abandoned order. New emails will be sent to user according to schedule time.', 'woo-cart-abandonment-recovery'
 									);
 									?>
 								</p>

@@ -1,6 +1,10 @@
+Version 1.2.8 - Friday, 14th August 2020
+- New: Added new option to prevent recovery emails for specific order status.
+- Fix: Deprecated the 'woo_ca_exclude_on_hold_order_from_tracking' filter.
+
 Version 1.2.7 - Tuesday, 16th June 2020
-- New: Users can now share [non-personal usage data] to help us test and develop better products. 
-( https://store.brainstormforce.com/usage-tracking/?utm_source=wp_repo&utm_medium=changelog&utm_campaign=usage_tracking )
+- New: Users can now share [non-personal usage data] to help us test and develop better products.
+(https://my.cartflows.com/usage-tracking/?utm_source=wp_repo&utm_medium=changelog&utm_campaign=usage_tracking)
 
 Version 1.2.6 - Thursday, 21st May 2020
 - New: Added option to send the email to admin after successfully cart recovery of the abandoned order.

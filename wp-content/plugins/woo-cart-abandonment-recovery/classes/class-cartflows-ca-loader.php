@@ -78,7 +78,7 @@ if ( ! class_exists( 'CARTFLOWS_CA_Loader' ) ) {
 			define( 'CARTFLOWS_CA_BASE', plugin_basename( CARTFLOWS_CA_FILE ) );
 			define( 'CARTFLOWS_CA_DIR', plugin_dir_path( CARTFLOWS_CA_FILE ) );
 			define( 'CARTFLOWS_CA_URL', plugins_url( '/', CARTFLOWS_CA_FILE ) );
-			define( 'CARTFLOWS_CA_VER', '1.2.7' );
+			define( 'CARTFLOWS_CA_VER', '1.2.8' );
 			define( 'CARTFLOWS_CA_SLUG', 'cartflows_ca' );
 
 			define( 'CARTFLOWS_CA_CART_ABANDONMENT_TABLE', 'cartflows_ca_cart_abandonment' );
@@ -114,6 +114,9 @@ if ( ! class_exists( 'CARTFLOWS_CA_Loader' ) ) {
 			 */
 			do_action( 'cartflows_ca_init' );
 		}
+
+
+
 
 		/**
 		 * Fires admin notice when Elementor is not installed and activated.
@@ -215,7 +218,22 @@ if ( ! class_exists( 'CARTFLOWS_CA_Loader' ) ) {
 				require_once CARTFLOWS_CA_DIR . 'lib/notices/class-astra-notices.php';
 			}
 
-			require_once CARTFLOWS_CA_DIR . 'admin/bsf-analytics/class-bsf-analytics.php';
+			if ( ! class_exists( 'BSF_Analytics_Loader' ) ) {
+				require_once CARTFLOWS_CA_DIR . '/admin/bsf-analytics/class-bsf-analytics-loader.php';
+			}
+
+			$bsf_analytics = BSF_Analytics_Loader::get_instance();
+
+			$bsf_analytics->set_entity(
+				array(
+					'cf' => array(
+						'product_name'   => 'Woocommerce Cart Abandonment Recovery',
+						'usage_doc_link' => 'https://my.cartflows.com/usage-tracking/',
+						'path'           => CARTFLOWS_CA_DIR . 'admin/bsf-analytics',
+						'author'         => 'CartFlows Inc',
+					),
+				)
+			);
 		}
 
 		/**
@@ -319,6 +337,8 @@ if ( ! class_exists( 'CARTFLOWS_CA_Loader' ) ) {
 				'wcf_ca_gdpr_message'                  => 'Your email & cart are saved so we can send email reminders about this order.',
 				'wcf_ca_coupon_expiry'                 => 0,
 				'wcf_ca_coupon_expiry_unit'            => 'hours',
+				'wcf_ca_excludes_orders'               => array( 'processing', 'completed' ),
+
 			);
 
 			foreach ( $default_settings as $option_key => $option_value ) {

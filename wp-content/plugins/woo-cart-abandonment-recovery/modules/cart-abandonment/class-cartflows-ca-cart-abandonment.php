@@ -172,13 +172,14 @@ class Cartflows_Ca_Cart_Abandonment {
 	 */
 	public function wcf_ca_update_order_status( $order_id, $old_order_status, $new_order_status ) {
 
-		$acceptable_order_statuses = array( 'completed', 'processing', 'failed' );
+		$acceptable_order_statuses = $this->get_acceptable_order_statuses();
 
-		$exclude_on_hold_order = apply_filters( 'woo_ca_exclude_on_hold_order_from_tracking', false );
+		$exclude_on_hold_order = apply_filters_deprecated( 'woo_ca_exclude_on_hold_order_from_tracking', array( false ), '1.2.8', 'New Option is introduced instead of this filter' );
 
-		if ( $exclude_on_hold_order ) {
+		if ( $exclude_on_hold_order & ! ( in_array( 'on-hold', $acceptable_order_statuses, true ) ) ) {
 			array_push( $acceptable_order_statuses, 'on-hold' );
 		}
+
 		if ( ( WCF_CART_FAILED_ORDER === $new_order_status ) ) {
 			return;
 		}
@@ -981,6 +982,17 @@ class Cartflows_Ca_Cart_Abandonment {
 	}
 
 	/**
+	 * Get the acceptable order statuses.
+	 */
+	public function get_acceptable_order_statuses() {
+
+		$acceptable_order_statuses = get_option( 'wcf_ca_excludes_orders' );
+		$acceptable_order_statuses = array_map( 'strtolower', $acceptable_order_statuses );
+
+		return $acceptable_order_statuses;
+	}
+
+	/**
 	 * Deletes cart abandonment tracking and scheduled event.
 	 *
 	 * @param int $order_id Order ID.
@@ -988,9 +1000,10 @@ class Cartflows_Ca_Cart_Abandonment {
 	 */
 	public function delete_cart_abandonment_data( $order_id ) {
 
-		$acceptable_order_statuses = array( 'completed', 'processing' );
-		$order                     = wc_get_order( $order_id );
-		$order_status              = $order->get_status();
+		$acceptable_order_statuses = $this->get_acceptable_order_statuses();
+
+		$order        = wc_get_order( $order_id );
+		$order_status = $order->get_status();
 		if ( ! in_array( $order_status, $acceptable_order_statuses, true ) ) {
 			// Proceed if order status in completed or processing.
 			return;
